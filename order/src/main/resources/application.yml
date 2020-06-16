@@ -1,0 +1,33 @@
+server:
+  port: 10001
+spring:
+  application:
+    name: order
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: mysql
+feign:
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default: # 服务名 填写default表示为所有服务 或者指定某个服务 如 order
+        connectTimeout: 10000 # 连接超时 10秒
+        readTimeout: 20000 # 读取超时 20秒
+# 配置Eureka
+ribbon:
+  okhttp:
+    enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
