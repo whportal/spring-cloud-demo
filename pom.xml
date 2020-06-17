@@ -19,6 +19,8 @@
         <module>eureka-server</module>
         <module>order</module>
         <module>product</module>
+        <module>consul-order</module>
+        <module>consul-product</module>
     </modules>
 
     <properties>

@@ -1,0 +1,45 @@
+server:
+  port: 20011
+  servlet:
+    context-path: /product-server
+spring:
+  application:
+    name: consul-product
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: mysql
+  cloud:
+            # 配置consul
+            consul:
+              host: 127.0.0.1 # consul服务器的主机地址
+              port: 8500 # consul服务器的端口
+              discovery:
+                register: true # 是否注册
+                instance-id: ${spring.application.name}:${spring.cloud.client.ip-address} # 注册的实例ID(唯一标志)
+                service-name: ${spring.application.name} # 服务的名称
+                port: ${server.port} # 服务的请求端口
+                prefer-ip-address: true # 开启IP地址注册
+                ip-address: ${spring.cloud.client.ip-address} # 当前服务的请求IP
+                health-check-path: /actuator/health # 健康检查路径
+                health-check-interval: 15S # 健康检查时间间隔
+                heartbeat:
+                  enabled: true # 开启心跳检查
+feign:
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default: # 服务名 填写default表示为所有服务 或者指定某个服务 如 order
+        connectTimeout: 10000 # 连接超时 10秒
+        readTimeout: 20000 # 读取超时 20秒
+        loggerLevel: FULL
+# 配置Eureka
+ribbon:
+  okhttp:
+    enabled: true
