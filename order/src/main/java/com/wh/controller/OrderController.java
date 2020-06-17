@@ -1,5 +1,6 @@
 package com.wh.controller;
 
+import com.wh.entity.Product;
 import com.wh.entity.User;
 import com.wh.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2020-06-16 14:10
  */
 @RestController
-@RequestMapping("/order")
+@RequestMapping("order")
 public class OrderController {
 
     private UserService userService;
@@ -27,5 +28,10 @@ public class OrderController {
     @GetMapping("user/{id}")
     public User getById(@PathVariable("id") Long id) {
         return userService.getById(id);
+    }
+
+    @GetMapping("product/{id}")
+    public Product getProductById(@PathVariable("id") Long id) {
+        return userService.getProductById(id);
     }
 }

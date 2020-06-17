@@ -18,6 +18,7 @@
         <module>common</module>
         <module>eureka-server</module>
         <module>order</module>
+        <module>product</module>
     </modules>
 
     <properties>
