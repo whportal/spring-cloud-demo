@@ -1,0 +1,30 @@
+server:
+  port: 20031
+  servlet:
+    context-path: /product-server
+spring:
+  application:
+    name: hystrix-product-rest
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: mysql
+# 配置Ribbon
+ribbon:
+  okhttp:
+    enabled: true
+# 配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值

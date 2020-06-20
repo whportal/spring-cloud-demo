@@ -11,7 +11,7 @@
 
 
     <property name="log.path" value="/usr/local/logs"/>
-    <property name="APP_NAME" value="consul-order"/>
+    <property name="APP_NAME" value="hystrix-order"/>
 
     <contextName>order</contextName>
 

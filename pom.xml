@@ -21,6 +21,10 @@
         <module>product</module>
         <module>consul-order</module>
         <module>consul-product</module>
+        <module>hystrix-order</module>
+        <module>hystrix-product</module>
+        <module>hystrix-order-rest</module>
+        <module>hystrix-product-rest</module>
     </modules>
 
     <properties>
@@ -34,6 +38,8 @@
         <okhttp.version>3.14.9</okhttp.version>
         <feign-okhttp.version>11.0</feign-okhttp.version>
         <guava.version>29.0-jre</guava.version>
+        <gson.version>2.8.6</gson.version>
+        <fastjson.version>1.2.70</fastjson.version>
     </properties>
 
     <dependencyManagement>
@@ -71,6 +77,17 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
             </dependency>
 
             <!-- 自有模块版本锁定  -->
