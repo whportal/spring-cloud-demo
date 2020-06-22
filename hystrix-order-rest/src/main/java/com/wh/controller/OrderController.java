@@ -1,5 +1,7 @@
 package com.wh.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.wh.entity.Product;
 import com.wh.entity.User;
 import com.wh.response.Result;
@@ -39,6 +41,7 @@ public class OrderController {
     }
 
     @GetMapping("product/{id}")
+    @HystrixCommand(fallbackMethod = "productFallBack")
     public Result<Product> getProductById(@PathVariable("id") Long id) {
         return Result.success(userService.getProductById(id));
     }
@@ -49,8 +52,26 @@ public class OrderController {
     }
 
     @GetMapping("balance/product")
+    @HystrixCommand(fallbackMethod = "balanceFallBack")
     public Result<String> getBalanceProduct() {
         return Result.success(userService.getBalanceProduct());
     }
 
+    /**
+     * 降级方法 需要和被降级的接口的参数和返回值保持一致
+     *
+     * @return Result
+     */
+    public Result<String> balanceFallBack() {
+        return Result.failed("熔断:触发降级方法");
+    }
+
+    /**
+     * 降级方法 需要和被降级的接口的参数和返回值保持一致
+     *
+     * @return Result
+     */
+    public Result<Product> productFallBack(Long id) {
+        return Result.success("熔断:触发降级方法", null);
+    }
 }
