@@ -40,7 +40,7 @@
         </encoder>
     </appender>
 
-    <springProfile name="pro">
+    <springProfile name="test,pro">
         <!--2. 输出到文档-->
         <!-- 2.1 level为 DEBUG 日志，时间滚动输出  -->
         <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -211,7 +211,7 @@
 
 
     <!-- 4.2 生产环境:输出到文档 -->
-    <springProfile name="pro">
+    <springProfile name="test,pro">
         <root level="info">
             <appender-ref ref="CONSOLE"/>
             <appender-ref ref="DEBUG_FILE"/>
