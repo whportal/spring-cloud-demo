@@ -1,0 +1,45 @@
+server:
+  port: 10041
+  servlet:
+    context-path: /order-server
+spring:
+  application:
+    name: sentinel-order
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: mysql
+  cloud:
+    sentinel:
+      transport:
+        dashboard: localhost:8080 #配置监控的地址
+      eager: true # 关闭懒加载 默认是在客户端首次调用的时候进行初始化，开始向控制台发送心跳包
+feign:
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default: # 服务名 填写default表示为所有服务 或者指定某个服务 如 order
+        connectTimeout: 10000 # 连接超时 10秒
+        readTimeout: 20000 # 读取超时 20秒
+        loggerLevel: FULL
+  sentinel:
+    enabled: true # 开启Feign对Sentinel的支持
+# 配置Eureka
+ribbon:
+  okhttp:
+    enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值

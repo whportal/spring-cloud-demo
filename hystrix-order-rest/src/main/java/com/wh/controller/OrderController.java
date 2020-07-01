@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author wangwenhao
  * @description OrderController
@@ -42,7 +44,8 @@ public class OrderController {
 
     @GetMapping("product/{id}")
     @HystrixCommand(fallbackMethod = "productFallBack")
-    public Result<Product> getProductById(@PathVariable("id") Long id) {
+    public Result<Product> getProductById(@PathVariable("id") Long id) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
         return Result.success(userService.getProductById(id));
     }
 

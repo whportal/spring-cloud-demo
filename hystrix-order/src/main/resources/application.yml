@@ -1,7 +1,5 @@
 server:
   port: 10021
-  servlet:
-    context-path: /order-server
 spring:
   application:
     name: hystrix-order
@@ -39,3 +37,31 @@ eureka:
     lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
     lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值
 # 配置Hystrix
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          #线程池隔离还是信号量隔离 默认是THREAD 信号量是SEMAPHORE
+          strategy: THREAD
+          thread:
+            timeoutInMilliseconds: 3000 #默认的连接超时时间1秒,若1秒没有返回数据,自动的触发降级逻辑
+      circuitBreaker:
+        # 跟踪熔断器的健康性 如果未达标则让request短路 默认是true
+        enabled: true
+        # 一个rolling window内最小的请求数 即触发熔断的最小请求次数 默认20
+        requestVolumeThreshold: 5
+        # 错误比率阈值 如果错误率>=该值 circuit会被打开，并短路所有请求触发fallback 默认50 即触发熔断的失败请求的最小占比 默认50%
+        errorThresholdPercentage: 10
+        # 触发短路的时间值 当该值设置为5000时，则当触发circuit break后的5000毫秒内都会拒绝request 即熔断多少秒后去尝试请求
+        sleepWindowInMilliseconds: 5000
+  threadpool:
+    default:
+      #并发执行的最大线程数，默认10
+      coreSize: 10
+# 配置健康监控
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

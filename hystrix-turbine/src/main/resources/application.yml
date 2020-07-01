@@ -1,0 +1,22 @@
+server:
+  port: 30000
+spring:
+  application:
+    name: hystrix-turbine
+# 配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值
+turbine:
+  appConfig: hystrix-order,hystrix-product  # 要监控的微服务列表，多个用,分隔
+  aggregator:
+    cluster-config: default # 指定聚合哪些集群，多个之间使用,分割 默认为default
+  cluster-name-expression: new String("default")  # 用于指定集群名称，当服务数量非常多的时候可以启动多个
+  combine-host-port: true # 让同一主机上的服务通过主机名和端口号的组合区分
+
