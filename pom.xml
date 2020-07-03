@@ -30,6 +30,8 @@
         <module>sentinel-product</module>
         <module>sentinel-order-rest</module>
         <module>sentinel-product-rest</module>
+        <module>zuul-server</module>
+        <module>gateway-server</module>
     </modules>
 
     <properties>

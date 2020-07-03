@@ -1,0 +1,53 @@
+server:
+  port: 8002
+spring:
+  application:
+    name: gateway-server
+  cloud:
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          lower-case-service-id: true # 将ServiceID转为小写
+      routes:
+        - id: order
+          uri: lb://order #微服务名称
+          predicates:
+            - Path=/api/order-server/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /$\{segment} # 重写路径 去掉api
+# Redis限流
+#            - name: RequestRateLimiter
+#              args:
+#                # 使用SpEL从容器中获取对象
+#                key-resolver: '#{@pathKeyResolver}'
+#                # 令牌桶每秒填充平均速率
+#                redis-rate-limiter.replenishRate: 1
+#                # 令牌桶的总容量
+#                redis-rate-limiter.burstCapacity: 3
+
+  redis:
+    host: localhost
+    port: 6379
+# 路由配置方式2 从Eureka获取服务
+#        - id: order
+#          uri: lb://order # 通过Eureka获取服务
+#          predicates:
+#            - Path=/order-server/**
+# 路由配置方式1 指定目标服务器IP方式
+#        - id: order # 自定义路由ID 保持唯一
+#          uri: http://127.0.0.1:10001 # 目标服务地址
+#          predicates:
+#            - Path=/order-server/** # 路由条件，predicates接受一个输入参数 返回一个布尔值结果 该路径会在转发时拼接到目标服务器后面 如http://127.0.0.1:10001/order-server/**
+# 配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值
+
+

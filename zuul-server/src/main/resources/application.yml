@@ -1,0 +1,33 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: zuul-server
+# 配置Eureka
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值
+
+zuul:
+  routes:
+    # 配置方式1 通过指定映射路径和URl进行路由
+#    order-service: # 路由ID 随便写
+#      path: /order-server/** # 映射路径
+#      url: http://localhost:10001/order-server # 映射路径对应的实际微服务的URL地址
+#      sensitiveHeaders: #默认zuul会屏蔽cookie，cookie不会传到下游服务，这里设置为空则取消默认的黑名单，如果设置了具体的头信息则不会传到下游服务
+    # 配置方式2 通过指定映射路径和serviceID进行路由 需要使用Eureka
+    order-service: # 路由ID 随便写
+      path: /order-server/** # 映射路径
+      serviceId: order # 配置转发的微服务名称
+      stripPrefix: false # 局部配置不去掉路由前缀 这样可以路由到设置了content-path的服务上
+    # 配置方式3 当路由ID和微服务的serviceId一致时 可以使用以下简化配置
+#    order: /order-server/**
+    # Zuul默认的路由规则：一切服务的映射路径就是服务名本身 例如 服务名为 order-rest 则默认的映射路径就是 /order-rest/**
+  strip-prefix: true # 全局配置去掉路由前缀 默认是true
+
