@@ -1,0 +1,45 @@
+server:
+  port: 10061
+  servlet:
+    context-path: /order-server
+spring:
+  application:
+    name: sleuth-order
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cloud?allowMultiQueries=true&useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database: mysql
+  zipkin:
+    base-url: http://127.0.0.1:9411/ #zipkin server的请求地址
+    sender:
+      type: web # 请求方式，默认以http的方式向zipkin server发送追踪数据
+  sleuth:
+    sampler:
+      probability: 1.0 # 采样的采样比 默认是0.1 便于测试设置为1.0
+feign:
+  okhttp:
+    enabled: true
+  client:
+    config:
+      default: # 服务名 填写default表示为所有服务 或者指定某个服务 如 order
+        connectTimeout: 10000 # 连接超时 10秒
+        readTimeout: 20000 # 读取超时 20秒
+        loggerLevel: FULL
+# 配置Eureka
+ribbon:
+  okhttp:
+    enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值

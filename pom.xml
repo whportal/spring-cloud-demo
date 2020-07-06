@@ -32,6 +32,9 @@
         <module>sentinel-product-rest</module>
         <module>zuul-server</module>
         <module>gateway-server</module>
+        <module>sleuth-order</module>
+        <module>sleuth-product</module>
+        <module>gateway-server-sleuth</module>
     </modules>
 
     <properties>
