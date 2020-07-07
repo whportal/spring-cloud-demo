@@ -35,6 +35,8 @@
         <module>sleuth-order</module>
         <module>sleuth-product</module>
         <module>gateway-server-sleuth</module>
+        <module>stream-product</module>
+        <module>stream-consumer</module>
     </modules>
 
     <properties>

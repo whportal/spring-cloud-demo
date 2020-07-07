@@ -1,0 +1,31 @@
+server:
+  port: 20071
+  servlet:
+    context-path: /stream-consumer
+spring:
+  application:
+    name: stream-consumer
+  rabbitmq:
+    host: 192.168.10.252
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: whportal
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: stream # 指定消息接收来源 在rabbitmq中，指的是发送到名称为stream的exchange中
+          contentType: application/json # 指定消息的类型
+        myInput:
+          destination: stream-custom # 指定消息接收来源 在rabbitmq中，指的是发送到名称为stream的exchange中
+          contentType: application/json # 指定消息的类型
+          group: group-1 # 指定分组 同一分组的消费者只有一个能获取消息并消费
+          consumer:
+            partitioned: true # 开启消费者分区功能
+#      binders: # 配置绑定器
+#        defaultRabbit:
+#          type: rabbit
+      default-binder: rabbit
+      instance-count: 2 # 指定当前消费者的总实例数量
+      instance-index: 0 # 指定当前实例的索引号 从0开始 最大值为spring.cloud.stream.instanceCount 参数 - 1
