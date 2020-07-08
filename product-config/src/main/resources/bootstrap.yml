@@ -1,0 +1,19 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9001/eureka/
+  instance:
+    prefer-ip-address: true # 使用IP地址注册
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+    lease-expiration-duration-in-seconds: 10 # 注册中心从上次接收到心跳到剔除服务的间隔  便于测试 生产环境保持默认值
+    lease-renewal-interval-in-seconds: 5 # 向注册中心发送心跳的间隔 便于测试 生产环境保持默认值
+spring:
+  cloud:
+    config:
+      name: config-product # 应用名称 需要对应git中配置文件的前半部分
+      profile: dev # 开发环境
+      label: master # git中的分支
+      # 通过注册中心获取config-server配置
+      discovery:
+        enabled: true # 开启服务发现
+        service-id: config-server # config-server的service-id
