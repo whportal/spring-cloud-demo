@@ -1,6 +1,9 @@
 package com.wh.entity;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,22 +19,29 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tb_user")
+@ApiModel("用户")
 public class User implements Serializable {
 
     private static final long serialVersionUID = -4021468249558090927L;
 
+    @ApiModelProperty("id")
     @Id
     @GeneratedValue
     private Long id;
 
+    @ApiModelProperty("用户名")
     private String username;
 
+    @ApiModelProperty("密码")
     private String password;
 
+    @ApiModelProperty("年龄")
     private Integer age;
 
+    @ApiModelProperty("金额")
     private BigDecimal balance;
 
+    @ApiModelProperty("地址")
     private String address;
 
     public Long getId() {

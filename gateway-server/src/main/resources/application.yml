@@ -13,9 +13,13 @@ spring:
         - id: order
           uri: lb://order #微服务名称
           predicates:
-            - Path=/api/order-server/**
-          filters:
-            - RewritePath=/api/(?<segment>.*), /$\{segment} # 重写路径 去掉api
+            - Path=/order-server/**
+#          filters:
+#            - RewritePath=/api/(?<segment>.*), /$\{segment} # 重写路径 去掉api
+        - id: product
+          uri: lb://product #微服务名称
+          predicates:
+            - Path=/product-server/**
 # Redis限流
 #            - name: RequestRateLimiter
 #              args:

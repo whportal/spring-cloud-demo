@@ -25,7 +25,7 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         String uri = request.getURI().getPath();
         // 登录接口放行
-        if (uri.contains("/login" )) {
+        if (uri.contains("/login" )|| uri.contains("api-docs")||uri.contains("doc")) {
             return chain.filter(exchange);
         }
 

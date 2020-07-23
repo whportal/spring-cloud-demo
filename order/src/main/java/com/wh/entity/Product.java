@@ -1,5 +1,8 @@
 package com.wh.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -15,24 +18,32 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "tb_product")
+@ApiModel("产品")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = 6584057944868493515L;
 
+    @ApiModelProperty("id")
     @Id
     @GeneratedValue
     private Long id;
 
+    @ApiModelProperty("产品名称")
     private String productName;
 
+    @ApiModelProperty("产品状态")
     private Integer status;
 
+    @ApiModelProperty("产品价格")
     private BigDecimal price;
 
+    @ApiModelProperty("产品描述")
     private String productDesc;
 
+    @ApiModelProperty("产品标题")
     private String caption;
 
+    @ApiModelProperty("库存")
     private Long inventory;
 
     public Long getId() {
